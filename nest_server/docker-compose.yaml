@@ -1,0 +1,28 @@
+services:
+  app:
+    container_name: "nest_server"
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/app/
+    networks:
+      - server_network
+
+  mongo:
+    image: mongo:8.0.3
+    container_name: "mongodb"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    ports:
+      - 27017:27017
+    networks:
+      - server_network
+
+networks:
+  server_network:
+    name: server_network
+    driver: bridge
+
+# mongodb://root:root@localhost:27017/nest?authSource=admin&directConnection=true
