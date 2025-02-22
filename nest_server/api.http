@@ -12,7 +12,7 @@ Content-Type: application/json
     "image": "AMZN.png"
 }
 
-
+###
 @assetId = {{ createAsset.response.body._id }}
 ###
 GET http://localhost:3000/assets
@@ -43,7 +43,7 @@ Content-Type: application/json
 
 {
     "assetId": "{{ assetId }}",
-    "shares": 100,
+    "shares": 100
 }
 
 ##################

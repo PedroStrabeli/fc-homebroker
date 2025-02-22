@@ -1,24 +1,30 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AssetsService } from './assets.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
+import { AssetPresenter } from './asset.presenter';
+import { Asset } from './entities/asset.entity';
 
 @Controller('assets')
 export class AssetsController {
   constructor(private readonly assetsService: AssetsService) {}
 
   @Post()
-  create(@Body() createAssetDto: CreateAssetDto) {
-    return this.assetsService.create(createAssetDto);
+  async create(@Body() createAssetDto: CreateAssetDto) {
+    const asset = await this.assetsService.create(createAssetDto);
+    return new AssetPresenter(asset);
   }
 
   @Get()
-  findAll() {
-    return this.assetsService.findAll();
+  async findAll() {
+    const assets = await this.assetsService.findAll();
+    return assets.map((asset: Asset) => new AssetPresenter(asset));
   }
 
   @Get(':symbol')
-  findOne(@Param('symbol') symbol: string) {
-    return this.assetsService.findOne(symbol);
+  async findOne(@Param('symbol') symbol: string) {
+    // teria que fazer sanity check para ver se existe antesde converter pro presenter
+    const asset = await this.assetsService.findOne(symbol);
+    return new AssetPresenter(asset!);
   }
 
   //+id transforma em inteiro

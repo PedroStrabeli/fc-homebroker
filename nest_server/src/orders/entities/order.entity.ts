@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import crypto from 'crypto';
 import { Asset, AssetDocument } from 'src/assets/entities/asset.entity';
+import { Wallet, WalletDocument } from 'src/wallets/entities/wallet.entity';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -30,6 +31,9 @@ export class Order {
 
   @Prop()
   price: number;
+
+  @Prop({ type: String, ref: Wallet.name })
+  wallet: WalletDocument | string;
 
   @Prop({ type: String, ref: Asset.name })
   asset: AssetDocument | string;
