@@ -1,2 +1,2 @@
 # fc-homebroker
-Homebroker project from FullCycle imersion 21
+NestJS API server for the Homebroker project from FullCycle imersion 21
