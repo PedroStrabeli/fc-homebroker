@@ -10,7 +10,7 @@ services:
       - server_network
 
   mongo:
-    image: mongo:8.0.3
+    build: ./.docker/mongodb
     container_name: "mongodb"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root

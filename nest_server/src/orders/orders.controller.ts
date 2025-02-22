@@ -1,23 +1,31 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { AssetPresenter } from 'src/assets/asset.presenter';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
+  async create(@Body() createOrderDto: CreateOrderDto) {
+    const asset = await this.ordersService.create(createOrderDto);
+    return new AssetPresenter(asset);
   }
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  async findAll(@Query('walletId') walletId: string) {
+    // aqui passaria do header de autenticação da request, mas vamos usar query param
+    const asset = await this.ordersService.findAll({
+      walletId,
+    });
+    return new AssetPresenter(asset);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    // teria que fazer sanity check para ver se existe antesde converter pro presenter
+    const asset = await this.ordersService.findOne(id);
+    return new AssetPresenter(asset!);
   }
 }
